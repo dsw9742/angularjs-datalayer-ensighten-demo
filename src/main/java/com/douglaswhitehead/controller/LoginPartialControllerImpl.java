@@ -14,21 +14,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.util.HtmlUtils;
 
-import com.douglaswhitehead.datalayer.ErrorDataLayer;
+import com.douglaswhitehead.datalayer.LoginDataLayer;
 import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.User;
 
 @Controller
-public class ErrorControllerImpl extends AbstractController implements ErrorController {
-
+public class LoginPartialControllerImpl extends AbstractController implements LoginPartialController {
+	
 	@Autowired
-	private ErrorDataLayer dataLayer;
+	private LoginDataLayer dataLayer;
 	
 	@Override
-	@RequestMapping(value = "/error", method = RequestMethod.GET)
-	public String error(@RequestParam(value = "error", required = false) final String error, 
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(@RequestParam(value = "error", required = false) final String error, 
 			final HttpServletRequest request, final Device device, final HttpServletResponse response, 
 			final Model model) {
 		boolean auth = isAuthenticated();
@@ -46,17 +45,16 @@ public class ErrorControllerImpl extends AbstractController implements ErrorCont
 		if (auth) {
 			user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		}
-		String digitalData = digitalDataAdapter.adapt(dataLayer.error(HtmlUtils.htmlEscape(error), String.valueOf(response.getStatus()), request, response, device, model, cart, user));
+		String digitalData = digitalDataAdapter.adapt(dataLayer.login(error, request, response, device, model, cart, user));
 		
 		model.addAttribute("ensManAccountId", properties.getAccountId());
 		model.addAttribute("ensManPublishPath", properties.getPublishPath());
 		model.addAttribute("isAuthenticated", auth);
 		model.addAttribute("cartId", cartId);
 		model.addAttribute("cartSize", calculateCartSize(cart));
-		model.addAttribute("error", HtmlUtils.htmlEscape(error));
-		model.addAttribute("status", response.getStatus());
 		model.addAttribute("digitalData", digitalData);
 		
-		return "error";
+		return "login";
 	}
+
 }

@@ -13,23 +13,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.douglaswhitehead.datalayer.LoginDataLayer;
+import com.douglaswhitehead.datalayer.IndexDataLayer;
 import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.User;
 
 @Controller
-public class LoginControllerImpl extends AbstractController implements LoginController {
+@RequestMapping("/")
+public class IndexPageControllerImpl extends AbstractController implements IndexPageController {
 	
 	@Autowired
-	private LoginDataLayer dataLayer;
+	private IndexDataLayer dataLayer;
 	
-	@Override
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(@RequestParam(value = "error", required = false) final String error, 
-			final HttpServletRequest request, final Device device, final HttpServletResponse response, 
-			final Model model) {
+	@RequestMapping(method=RequestMethod.GET)
+	public String index(final HttpServletRequest request, final Device device, final HttpServletResponse response, final Model model) {
 		boolean auth = isAuthenticated();
 		String cartId;
 
@@ -45,7 +42,7 @@ public class LoginControllerImpl extends AbstractController implements LoginCont
 		if (auth) {
 			user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		}
-		String digitalData = digitalDataAdapter.adapt(dataLayer.login(error, request, response, device, model, cart, user));
+		String digitalData = digitalDataAdapter.adapt(dataLayer.index(request, response, device, model, cart, user));
 		
 		model.addAttribute("ensManAccountId", properties.getAccountId());
 		model.addAttribute("ensManPublishPath", properties.getPublishPath());
@@ -54,7 +51,7 @@ public class LoginControllerImpl extends AbstractController implements LoginCont
 		model.addAttribute("cartSize", calculateCartSize(cart));
 		model.addAttribute("digitalData", digitalData);
 		
-		return "login";
+		return "index";
 	}
 
 }

@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 
 import com.douglaswhitehead.model.OrderForm;
 
-public interface OrderController {
+public interface OrderPartialController {
 
 	String checkout(OrderForm orderForm, HttpServletRequest request, Device device, 
 			HttpServletResponse response, Model model);

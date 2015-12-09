@@ -29,7 +29,7 @@ import com.douglaswhitehead.model.User;
 
 @Controller
 @RequestMapping("/orders")
-public class OrderControllerImpl extends AbstractController implements OrderController {
+public class OrderPartialControllerImpl extends AbstractController implements OrderPartialController {
 	
 	@Autowired
 	private OrderDataLayer dataLayer;

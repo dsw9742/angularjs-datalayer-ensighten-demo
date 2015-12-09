@@ -24,7 +24,7 @@ import com.douglaswhitehead.service.ProductService;
 
 @Controller
 @RequestMapping("/products")
-public class ProductControllerImpl extends AbstractController implements ProductController {
+public class ProductPartialControllerImpl extends AbstractController implements ProductPartialController {
 	
 	@Autowired
 	private ProductService productService;

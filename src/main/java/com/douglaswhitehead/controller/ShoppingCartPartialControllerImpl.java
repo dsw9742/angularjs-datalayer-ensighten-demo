@@ -21,7 +21,7 @@ import com.douglaswhitehead.model.User;
 
 @Controller
 @RequestMapping("/carts")
-public class ShoppingCartControllerImpl extends AbstractController implements ShoppingCartController {
+public class ShoppingCartPartialControllerImpl extends AbstractController implements ShoppingCartPartialController {
 	
 	@Autowired
 	private ShoppingCartDataLayer dataLayer;
