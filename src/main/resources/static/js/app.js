@@ -14,7 +14,7 @@ angular.module('app', ['ngRoute', 'DigitalDataService']) // primary application 
 		templateUrl: 'partials/home.html',
 		controller: 'home-controller',
 		resolve: {
-		  digitalData: ['DigitalDataHttp', function(DigitalDataHttp){ // call to server for digitalData
+		  response: ['DigitalDataHttp', function(DigitalDataHttp){ // call to server for digitalData
 			return DigitalDataHttp.get('home');
 		  }]
 		}
@@ -23,17 +23,23 @@ angular.module('app', ['ngRoute', 'DigitalDataService']) // primary application 
   .controller('app-controller', ['$scope', function($scope) { // primary application controller
 	console.log('AngularJS::app-controller::app-controller loaded');
   }])
-  .controller('home-controller', ['$scope', 'digitalData', function($scope, digitalData) { // controller to demo "home"-type digitalData functionality
+  .controller('home-controller', ['$rootScope', '$scope', 'response', function($rootScope, $scope, response) { // controller to demo "home"-type digitalData functionality
 	console.log('AngularJS::home-controller::home-controller loaded');
+
+	console.log("%o", response);
 	
-	window.digitalData = digitalData.data; // assign fresh digitalData object
+	$rootScope.isAuthenticated = response.data.isAuthenticated;
+	$rootScope.cartId = response.data.cartId;
+	$rootScope.cartSize = response.data.cartSize;
+	
+	window.digitalData = JSON.parse(response.data.digitalData); // parse and assign fresh digitalData object
 	
 	// make client-side updates to digitalData
 	window.digitalData.page.pageInfo.destinationURL = document.location.toString();
 	window.digitalData.page.pageInfo.referringURL = document.referrer.toString();
 	window.digitalData.page.pageInfo.breadcrumbs = document.location.pathname.split('/');
 	
-	console.log('AngularJS::home-controller::digitalData loaded');
+	console.log('AngularJS::home-controller::digitalData loaded, assigned, and updated');
 	
 	// option 1
 	$(document).trigger("digitalDataRefresh", {id:"0", name:"test"}); // fire custom digitalDataRefresh event using. This can be observed by tag management 

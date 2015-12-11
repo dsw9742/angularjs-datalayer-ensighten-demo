@@ -1,5 +1,7 @@
 package com.douglaswhitehead.controller.api.datalayer;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -16,7 +18,6 @@ import com.douglaswhitehead.controller.AbstractController;
 import com.douglaswhitehead.datalayer.HomeDataLayer;
 import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.User;
-import com.douglaswhitehead.model.digitaldata.DigitalData;
 
 @RestController
 @RequestMapping("/digitaldata")
@@ -27,7 +28,7 @@ public class HomeDataLayerControllerImpl extends AbstractController implements H
 
 	@Override
 	@RequestMapping("/home")
-	public String home(HttpServletRequest request, Device device, HttpServletResponse response) {
+	public Map<String, Object> home(HttpServletRequest request, Device device, HttpServletResponse response) {
 		boolean auth = isAuthenticated();
 		String cartId;
 
@@ -43,21 +44,22 @@ public class HomeDataLayerControllerImpl extends AbstractController implements H
 		if (auth) {
 			user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		}
-		/*
-		String digitalData = digitalDataAdapter.adapt(dataLayer.index(request, response, device, cart, user));
+
+		Map<String, Object> map = new HashMap<String, Object>();
 		
-		model.addAttribute("ensManAccountId", properties.getAccountId());
-		model.addAttribute("ensManPublishPath", properties.getPublishPath());
-		model.addAttribute("isAuthenticated", auth);
-		model.addAttribute("cartId", cartId);
-		model.addAttribute("cartSize", calculateCartSize(cart));
-		model.addAttribute("digitalData", digitalData);
-		*/
-		
-		//DigitalData digitalData = dataLayer.home(request, response, device, cart, user);
 		String digitalData = digitalDataAdapter.adapt(dataLayer.home(request, response, device, cart, user));
 		
-		return digitalData;
+		//model.addAttribute("ensManAccountId", properties.getAccountId());
+		//model.addAttribute("ensManPublishPath", properties.getPublishPath());
+		map.put("isAuthenticated", auth);
+		map.put("cartId", cartId);
+		map.put("cartSize", calculateCartSize(cart));
+		map.put("digitalData", digitalData);
+		
+		//DigitalData digitalData = dataLayer.home(request, response, device, cart, user);
+		//String digitalData = digitalDataAdapter.adapt(dataLayer.home(request, response, device, cart, user));
+		
+		return map;
 	}
 
 }
