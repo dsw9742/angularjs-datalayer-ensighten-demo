@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 
 import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.User;
@@ -24,14 +23,14 @@ import com.douglaswhitehead.model.digitaldata.page.PageImpl;
 import com.douglaswhitehead.model.digitaldata.page.PageInfoImpl;
 
 @Component
-public class IndexDataLayerImpl extends AbstractDataLayer implements IndexDataLayer {
+public class HomeDataLayerImpl extends AbstractDataLayer implements HomeDataLayer {
 
 	@Override
-	public DigitalData index(final HttpServletRequest request, final HttpServletResponse response, 
-			final Device device, final Model model, final ShoppingCart cart, final User user) {
+	public DigitalData home(final HttpServletRequest request, final HttpServletResponse response, 
+			final Device device, final ShoppingCart cart, final User user) {
 		return new DigitalDataImpl.Builder()
-			.pageInstanceID("index-prod")
-			.page(indexPageAdapter(request, device))
+			.pageInstanceID("home-prod")
+			.page(homePageAdapter(request, device))
 			.product(productsAdapter.adapt(null))
 			.cart(cartAdapter.adapt(cart))
 			.transaction(orderAdapter.adapt(null))
@@ -43,7 +42,7 @@ public class IndexDataLayerImpl extends AbstractDataLayer implements IndexDataLa
 		.build();
 	}
 	
-	private Page indexPageAdapter(final HttpServletRequest request, final Device device) {
+	private Page homePageAdapter(final HttpServletRequest request, final Device device) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyy");
 		Date issueDate = null;
 		Date effectiveDate = null;
@@ -59,8 +58,8 @@ public class IndexDataLayerImpl extends AbstractDataLayer implements IndexDataLa
 		
 		return new PageImpl.Builder()
 			.pageInfo(new PageInfoImpl.Builder()
-					.pageID("index")
-					.pageName("index")
+					.pageID("home")
+					.pageName("home")
 					.destinationURL("") // does not work well server-side, plan to overwrite this value from client side
 					.referringURL(request.getHeader("referer")) // does not work well server-side, plan to overwrite this value from client side
 					.sysEnv(detector.detect(device))
@@ -77,7 +76,7 @@ public class IndexDataLayerImpl extends AbstractDataLayer implements IndexDataLa
 					.publisher("Shirley J Tester")
 				.build())
 			.category(new CategoryImpl.Builder()
-					.primaryCategory("index") // we use site section as the primary category for our demo retail app
+					.primaryCategory("home") // we use site section as the primary category for our demo retail app
 				.build())
 			.attributes(new AttributesImpl.Builder() // empty attributes object
 				.build())

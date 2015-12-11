@@ -26,6 +26,17 @@
 		/*]]>*/	
 		</script>
 		-->
+		
+		<script type="text/javascript">
+			$(document).on("digitalDataRefresh", function(event, data) {
+				console.log('AngularJS::document::digitalDataRefresh event observed.');
+				console.log("AngularJS::document::digitalDataRefresh event %o",event);
+				console.log("AngularJS::document::digitalDataRefresh data %o",data);
+			})
+		
+			window.digitalData = {};
+		</script>
+		
 		<script type="text/javascript" th:src="${'//nexus.ensighten.com/'+ensManAccountId+'/'+ensManPublishPath+'/Bootstrap.js'}"></script>
 	</head>
 	<body>

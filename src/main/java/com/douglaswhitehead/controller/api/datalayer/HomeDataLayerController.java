@@ -9,6 +9,6 @@ import com.douglaswhitehead.model.digitaldata.DigitalData;
 
 public interface HomeDataLayerController {
 	
-	public DigitalData home(HttpServletRequest request, Device device, HttpServletResponse response);
+	public String home(HttpServletRequest request, Device device, HttpServletResponse response);
 
 }
