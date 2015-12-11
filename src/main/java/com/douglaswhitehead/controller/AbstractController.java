@@ -21,9 +21,6 @@ import com.douglaswhitehead.service.ShoppingCartService;
 
 public abstract class AbstractController {
 	
-	@Autowired
-	protected EnsightenManageConfigProperties properties;
-	
 	private static final String CART_ID_COOKIE_NAME = "shoppingCartId";
 	
 	private static final int CART_ID_COOKIE_EXPIRY = 60 * 60 * 24 * 60; // 60 days
@@ -41,15 +38,6 @@ public abstract class AbstractController {
 	 */
 	@Autowired
 	protected ShoppingCartService cartService;
-	
-	@PostConstruct
-	public void init() {
-		if(null == properties) {
-			System.out.println("no properties");
-		} else {
-			System.out.println(properties.toString());
-		}
-	}
 	
 	/**
 	 * Returns true if a principal is not anonymous, false otherwise.

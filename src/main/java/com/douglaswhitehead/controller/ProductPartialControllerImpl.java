@@ -53,8 +53,8 @@ public class ProductPartialControllerImpl extends AbstractController implements 
 		}
 		String digitalData = digitalDataAdapter.adapt(dataLayer.list(products, request, response, device, model, cart, user));
 
-		model.addAttribute("ensManAccountId", properties.getAccountId());
-		model.addAttribute("ensManPublishPath", properties.getPublishPath());
+		//model.addAttribute("ensManAccountId", properties.getAccountId());
+		//model.addAttribute("ensManPublishPath", properties.getPublishPath());
 		model.addAttribute("isAuthenticated",auth);
 		model.addAttribute("cartId", cartId);
 		model.addAttribute("cartSize", calculateCartSize(cart));
@@ -85,8 +85,8 @@ public class ProductPartialControllerImpl extends AbstractController implements 
 		}
 		String digitalData = digitalDataAdapter.adapt(dataLayer.listByCategory(category, products, request, response, device, model, cart, user));
 
-		model.addAttribute("ensManAccountId", properties.getAccountId());
-		model.addAttribute("ensManPublishPath", properties.getPublishPath());
+		//model.addAttribute("ensManAccountId", properties.getAccountId());
+		//model.addAttribute("ensManPublishPath", properties.getPublishPath());
 		model.addAttribute("isAuthenticated",auth);
 		model.addAttribute("cartId", cartId);
 		model.addAttribute("cartSize", calculateCartSize(cart));
@@ -120,8 +120,8 @@ public class ProductPartialControllerImpl extends AbstractController implements 
 		}
 		String digitalData = digitalDataAdapter.adapt(dataLayer.get(product, request, response, device, model, cart, user));
 		
-		model.addAttribute("ensManAccountId", properties.getAccountId());
-		model.addAttribute("ensManPublishPath", properties.getPublishPath());
+		//model.addAttribute("ensManAccountId", properties.getAccountId());
+		//model.addAttribute("ensManPublishPath", properties.getPublishPath());
 		model.addAttribute("isAuthenticated",auth);
 		model.addAttribute("cartId", cartId);
 		model.addAttribute("cartSize", calculateCartSize(cart));

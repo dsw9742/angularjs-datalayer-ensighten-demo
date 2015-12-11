@@ -71,8 +71,8 @@ public class OrderPartialControllerImpl extends AbstractController implements Or
 		}
 		String digitalData = digitalDataAdapter.adapt(dataLayer.checkout(request, response, device, model, cart, user));
 		
-		model.addAttribute("ensManAccountId", properties.getAccountId());
-		model.addAttribute("ensManPublishPath", properties.getPublishPath());
+		//model.addAttribute("ensManAccountId", properties.getAccountId());
+		//model.addAttribute("ensManPublishPath", properties.getPublishPath());
 		model.addAttribute("isAuthenticated", auth);
 		model.addAttribute("cartId", cart.getId().toString());
 		model.addAttribute("cartSize", calculateCartSize(cart));
@@ -143,8 +143,8 @@ public class OrderPartialControllerImpl extends AbstractController implements Or
 		
 		String digitalData = digitalDataAdapter.adapt(dataLayer.complete(request, response, device, model, cart, order, user));
 		
-		model.addAttribute("ensManAccountId", properties.getAccountId());
-		model.addAttribute("ensManPublishPath", properties.getPublishPath());
+		//model.addAttribute("ensManAccountId", properties.getAccountId());
+		//model.addAttribute("ensManPublishPath", properties.getPublishPath());
 		model.addAttribute("isAuthenticated", auth);
 		model.addAttribute("cartId", cart.getId().toString());
 		model.addAttribute("cartSize", 0); // cart items is now 0

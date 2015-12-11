@@ -33,11 +33,20 @@ angular.module('app', ['ngRoute', 'DigitalDataService']) // primary application 
 	window.digitalData.page.pageInfo.referringURL = document.referrer.toString();
 	window.digitalData.page.pageInfo.breadcrumbs = document.location.pathname.split('/');
 	
-	console.log("%o", window.digitalData);
-	
 	console.log('AngularJS::home-controller::digitalData loaded');
 	
-	$(document).trigger("digitalDataRefresh", {id:"0", name:"test"}); // fire digitalDataRefresh event
+	// option 1
+	$(document).trigger("digitalDataRefresh", {id:"0", name:"test"}); // fire custom digitalDataRefresh event using. This can be observed by tag management 
+	                                                                  // system using Delegate / On Ensighten Framework or jQuery On method. This 
+	                                                                  // is probably the most flexible option.
 	
-	//window.digitalDataLastUpdate = new Date(); // update digitalDataLastUpdate. This variable is watched by the tag management system.
+	// option 2
+	//Bootstrapper.ensEvent.trigger("digitalDataRefresh", {id:"0", name:"test"}); // fire custom digitalDataRefresh Ensighten event using 
+	                                                                              // Ensighten's proprietry event code. This can be observed by tag
+	                                                                              // management system using Delegate / On Ensighten Framework or jQuery 
+	                                                                              // On method. This is probably the most flexible option.
+	
+	// option 3
+	//window.digitalDataLastUpdate = new Date(); // update digitalDataLastUpdate variable. This variable can be watched by the tag management system
+	                                             // using Events:Value Changes type. This option polls.
   }]);

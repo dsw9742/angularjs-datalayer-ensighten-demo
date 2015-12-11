@@ -40,8 +40,8 @@ public class ShoppingCartPartialControllerImpl extends AbstractController implem
 		}
 		String digitalData = digitalDataAdapter.adapt(dataLayer.get(request, response, device, model, cart, user));
 		
-		model.addAttribute("ensManAccountId", properties.getAccountId());
-		model.addAttribute("ensManPublishPath", properties.getPublishPath());
+		//model.addAttribute("ensManAccountId", properties.getAccountId());
+		//model.addAttribute("ensManPublishPath", properties.getPublishPath());
 		model.addAttribute("isAuthenticated", auth);
 		model.addAttribute("cartId", cart.getId().toString());
 		model.addAttribute("cartSize", calculateCartSize(cart));
