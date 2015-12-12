@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 
 import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.User;
@@ -28,7 +27,7 @@ public class ShoppingCartDataLayerImpl extends AbstractDataLayer implements Shop
 
 	@Override
 	public DigitalData get(final HttpServletRequest request, final HttpServletResponse response, 
-			final Device device, final Model model, final ShoppingCart cart, final User user) {
+			final Device device, final ShoppingCart cart, final User user) {
 		return new DigitalDataImpl.Builder()
 				.pageInstanceID("shoppingCart-prod")
 				.page(getPageAdapter(request, device))

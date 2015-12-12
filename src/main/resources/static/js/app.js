@@ -4,6 +4,12 @@ angular.module('DataService', []) // service to retrieve data from server-side a
     Data.get = function(pageName){ // factory function to retrieve data from server-side
 	  return $http.get('/data/'+pageName);
 	};
+	Data.addToCart = function(cartId, productId){
+	  return $http.put('/data/carts/'+cartId+'/addToCart/'+productId);
+	};
+	Data.removeFromCart = function(cartId, productId){
+	  return $http.put('/data/carts/'+cartId+'/removeFromCart/'+productId);
+	};
 	Data.setRootScopeVars = function(response){ // factory function to set some $rootScope variables
 	  $rootScope.isAuthenticated = response.data.isAuthenticated;
 	  $rootScope.cartId = response.data.cartId;
@@ -20,13 +26,13 @@ angular.module('DataService', []) // service to retrieve data from server-side a
 	  console.log('AngularJS::%s::digitalData loaded, assigned, and updated',controllerName);
 		
 	  // option 1
-	  $(document).trigger("digitalDataRefresh", {id:"0", name:"digitalDataRefresh"}); // fire custom digitalDataRefresh event using. This can be observed by tag management 
+	  $(document).trigger("digitalDataRefresh", {id:"0", name:"digitalDataRefresh"}); // fire custom digitalDataRefresh event using jQuery. This can be observed by tag management 
 		                                                                  			  // system using Delegate / On Ensighten Framework or jQuery On method. This 
 		                                                                  			  // is probably the most flexible option.
 		
 	  // option 2
 	  //Bootstrapper.ensEvent.trigger("digitalDataRefresh", {id:"0", name:"digitalDataRefresh"}); // fire custom digitalDataRefresh Ensighten event using 
-		                                                                              			  // Ensighten's proprietry event code. This can be observed by tag
+		                                                                              			  // Ensighten's proprietary event code. This can be observed by tag
 		                                                                              			  // management system using Delegate / On Ensighten Framework or jQuery 
 		                                                                              			  // On method. This is probably the most flexible option.
 		
@@ -76,6 +82,15 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 		  }]
 		}
 	  })
+	  .when('/carts/:id', {
+		templateUrl: 'partials/carts/view.html',
+		controller: 'cart-controller',
+		resolve: {
+		  response: ['Data', '$route', function(Data, $route){
+			return Data.get('carts/'+$route.current.params.id);
+		  }]
+		}
+	  })
   }])
   .controller('app-controller', ['$scope', function($scope) { // primary application controller
 	console.log('AngularJS::app-controller::app-controller loaded');
@@ -111,6 +126,28 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 	Data.setRootScopeVars(response);
 	Data.setDigitalData(response, 'product-controller');
 	$scope.product = response.data.product;
+	$scope.addToCart = function() {
+	  Data.addToCart($rootScope.cartId, $scope.product.id)
+	    .success(function(cart) {
+		  $rootScope.cartSize = $rootScope.cartSize+1; // update UI
+		  var event = {id:"1", name:"digitalDataEvent", type:"addToCart", data:cart}; // create event
+		  window.digitalData.event.push(event); // update digitalData.event array. Note we are not updating any of 
+		                                        // the digitalData.cart subobject here as a design choice, though we 
+		                                        // could. The digitalData.cart subobject will, however, reflect the 
+		                                        // addition of this product the next time the entire digitalData
+		                                        // object is requested and returned from the server-side.
+		  $(document).trigger("digitalDataEvent", event); // fire custom digitalDataEvent event using jQuery
+	    });
+	};
 	
 	console.log('AngularJS::product-controller::controller loaded');
+  }])
+  .controller('cart-controller', ['$rootScope', '$scope', 'response', 'Data', function($rootScope, $scope, response, Data) {
+	console.log('AngularJS::cart-controller::controller loading');
+	  
+	Data.setRootScopeVars(response);
+	Data.setDigitalData(response, 'cart-controller');
+	$scope.cart = response.data.cart;
+	
+	console.log('AngularJS::cart-controller::controller loaded');
   }]);

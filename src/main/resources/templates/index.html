@@ -20,6 +20,12 @@
 				console.log("AngularJS::document::digitalDataRefresh event %o",event);
 				console.log("AngularJS::document::digitalDataRefresh data %o",data);
 			});
+			
+			$(document).on("digitalDataEvent", function(event, data) {
+				console.log('AngularJS::document::digitalDataEvent event observed.');
+				console.log("AngularJS::document::digitalDataEvent event %o",event);
+				console.log("AngularJS::document::digitalDataEvent data %o",data);
+			});
 		
 			window.digitalData = {};
 		</script>

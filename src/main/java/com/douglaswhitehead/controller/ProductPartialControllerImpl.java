@@ -17,7 +17,7 @@ import com.douglaswhitehead.controller.api.data.AbstractDataController;
 public class ProductPartialControllerImpl extends AbstractDataController implements ProductPartialController {
 
 	@Override
-	@RequestMapping(value="{pageName}", method=RequestMethod.GET)
+	@RequestMapping(value="/{pageName}", method=RequestMethod.GET)
 	public String get(@PathVariable("pageName") final String pageName, final HttpServletRequest request, final Device device, final HttpServletResponse response, final Model model) {
 		return "partials/products/"+pageName;
 	}
