@@ -1,0 +1,69 @@
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+	<div class="container">
+		<h2><span>{{product.name}}</span></h2>
+		<img ng-src="{{product.imageUrl}}" width="300" />
+  		<p><span>{{product.description}}</span></p>
+   		<p><span>${{product.price}}</span></p>
+   		<p><a class="btn btn-primary btn-lg" ng-href="#/carts/{{cartId}}/addToCart/{{product.id}}" role="button">+ Add to Cart</a></p>
+	</div>
+</div>
+
+<div class="container">
+    <form class="form-horizontal">
+   		<div class="form-group">
+   			<label for="id" class="col-sm-2 control-label">Id:</label>
+   			<div class="col-sm-4">
+   				<span id="id" class="col-md-4 form-control">{{product.id}}</span>
+   			</div>
+   		</div>
+   		<div class="form-group">
+   			<label for="name" class="col-sm-2 control-label">Name:</label>
+   			<div class="col-sm-4">
+   				<span id="name" class="col-md-4 form-control">{{product.name}}</span>
+   			</div>
+   		</div>
+   		<div class="form-group">
+   			<label for="description" class="col-sm-2 control-label">Description:</label>
+   			<div class="col-sm-4">
+   				<span id="description" class="col-md-4 form-control">{{product.description}}</span>
+   			</div>
+   		</div>
+   		<div class="form-group">
+   			<label for="manufacturer" class="col-sm-2 control-label">Manufacturer:</label>
+   			<div class="col-sm-4">
+   				<span id="manufacturer" class="col-md-4 form-control">{{product.manufacturer}}</span>
+   			</div>
+   		</div>
+   		<div class="form-group">
+   			<label for="sku" class="col-sm-2 control-label">SKU:</label>
+   			<div class="col-sm-4">
+   				<span id="sku" class="col-md-4 form-control">{{product.sku}}</span>
+   			</div>
+   		</div>
+   		<div class="form-group">
+   			<label for="color" class="col-sm-2 control-label">Color:</label>
+   			<div class="col-sm-4">
+   				<span id="color" class="col-md-4 form-control">{{product.color}}</span>
+   			</div>
+   		</div>
+   		<div class="form-group">
+   			<label for="size" class="col-sm-2 control-label">Size:</label>
+   			<div class="col-sm-4">
+   				<span id="size" class="col-md-4 form-control">{{product.size}}</span>
+   			</div>
+   		</div>
+   		<div class="form-group">
+   			<label for="price" class="col-sm-2 control-label">Price:</label>
+   			<div class="col-sm-4">
+   				<span id="price" class="col-md-4 form-control">{{product.price}}</span>
+   			</div>
+   		</div>
+   		<div class="form-group">
+   			<label for="category" class="col-sm-2 control-label">Category:</label>
+   			<div class="col-sm-4">
+   				<span id="category" class="col-md-4 form-control">{{product.category}}</span>
+   			</div>
+   		</div>
+	</form>
+</div>

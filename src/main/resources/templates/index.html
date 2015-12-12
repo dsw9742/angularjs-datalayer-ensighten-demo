@@ -19,7 +19,7 @@
 				console.log('AngularJS::document::digitalDataRefresh event observed.');
 				console.log("AngularJS::document::digitalDataRefresh event %o",event);
 				console.log("AngularJS::document::digitalDataRefresh data %o",data);
-			})
+			});
 		
 			window.digitalData = {};
 		</script>
@@ -27,7 +27,7 @@
 		<script type="text/javascript" th:src="${'//nexus.ensighten.com/'+ensManAccountId+'/'+ensManPublishPath+'/Bootstrap.js'}"></script>
 	</head>
 	<body ng-app="app">
-		<div id="header" ng-if="showNavbar == true">
+		<div id="header">
 			<nav class="navbar navbar-inverse navbar-fixed-top">
 	      		<div class="container">
 	        		<div class="navbar-header">
@@ -41,21 +41,21 @@
 	        		</div>
 	        		<div id="navbar" class="navbar-collapse collapse">
 	          			<form class="navbar-form navbar-right" ng-if="isAuthenticated == false">
-	            			<a class="btn btn-info" ng-href="#/login">Sign in</a>
+	            			<a class="btn btn-info" th:href="@{/login}">Sign in</a>
 	          			</form>
 	          			<form th:action="@{/logout}" method="post" class="navbar-form navbar-right" ng-if="isAuthenticated == true">
 	          				<input type="submit" class="btn" value="Sign out" />
 	          			</form>
 	          			<form class="navbar-form navbar-right">
-	          				<a class="btn btn-success" ng-href="/carts/{{cartId}}"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;{{cartSize}}</a>
+	          				<a class="btn btn-success" ng-href="#/carts/{{cartId}}"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;{{cartSize}}</a>
 	          			</form>
 	          			 
 	          			<div>
 		          			<ul class="nav navbar-nav">
-		        				<li><a href="/products/category/women">Women</a></li>
-				                <li><a href="/products/category/men">Men</a></li>
-				                <li><a href="/products/category/kids">Kids</a></li>
-				                <li><a href="/products/category/accessories">Accessories</a></li>
+		        				<li><a ng-href="#/products/category/women">Women</a></li>
+				                <li><a ng-href="#/products/category/men">Men</a></li>
+				                <li><a ng-href="#/products/category/kids">Kids</a></li>
+				                <li><a ng-href="#/products/category/accessories">Accessories</a></li>
 		        			</ul>
 	          			</div>
 	        		</div>

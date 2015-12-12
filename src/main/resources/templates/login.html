@@ -26,8 +26,6 @@
 		<script type="text/javascript" th:src="${'//nexus.ensighten.com/'+ensManAccountId+'/'+ensManPublishPath+'/Bootstrap.js'}"></script>
 	</head>
 	<body>
-		<!-- <div th:replace="header :: header">&nbsp;</div>-->
-		
 		<!-- Main jumbotron for a primary marketing message or call to action -->
 		<div class="jumbotron">
       		<div class="container">
@@ -63,8 +61,13 @@
     	</div>
 
     	<div class="container">
-	      	<div th:replace="footer :: footer">&nbsp;</div>
-    	</div>
+			<div id="footer">
+				<hr>
+				<footer>
+			       	<p>&copy; Retailer's Company 2015</p>
+			   	</footer>
+			</div>
+		</div>
 		
 	</body>
 </html>

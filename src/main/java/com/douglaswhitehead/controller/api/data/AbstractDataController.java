@@ -2,7 +2,6 @@ package com.douglaswhitehead.controller.api.data;
 
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.douglaswhitehead.adapter.DigitalDataToStringAdapter;
-import com.douglaswhitehead.configuration.EnsightenManageConfigProperties;
 import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.ShoppingCartItem;
 import com.douglaswhitehead.service.ShoppingCartService;

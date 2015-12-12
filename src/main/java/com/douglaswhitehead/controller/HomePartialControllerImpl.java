@@ -15,7 +15,7 @@ public class HomePartialControllerImpl implements HomePartialController {
 
 	@Override
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(final HttpServletRequest request, final Device device, final HttpServletResponse response, final Model model) {
+	public String get(final HttpServletRequest request, final Device device, final HttpServletResponse response, final Model model) {
 		return "partials/home";
 	}
 

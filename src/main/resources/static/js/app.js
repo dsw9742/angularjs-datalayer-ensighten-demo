@@ -19,12 +19,30 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 		  }]
 		}
 	  })
-	  .when('/login', {
-		templateUrl: 'partials/login.html',
-		controller: 'login-controller',
+	  .when('/products', {
+		templateUrl: 'partials/products/list.html',
+		controller: 'products-controller',
 		resolve: {
-		  response: ['DataHttp', function(DataHttp){
-			return DataHttp.get('login');
+		  response: ['DataHttp', '$route', function(DataHttp, $route){
+			return DataHttp.get('products');
+		  }]
+		}
+	  })
+	  .when('/products/category/:category', {
+		templateUrl: 'partials/products/listByCategory.html',
+		controller: 'products-by-category-controller',
+		resolve: {
+		  response: ['DataHttp', '$route', function(DataHttp, $route){
+			return DataHttp.get('products/category/'+$route.current.params.category);
+		  }]
+		}
+	  })
+	  .when('/products/:id', {
+		templateUrl: 'partials/products/view.html',
+		controller: 'product-controller',
+		resolve: {
+		  response: ['DataHttp', '$route', function(DataHttp, $route){
+			return DataHttp.get('products/'+$route.current.params.id);
 		  }]
 		}
 	  })
@@ -35,7 +53,6 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
   .controller('home-controller', ['$rootScope', '$scope', 'response', function($rootScope, $scope, response) { // controller to demo "home"-type digitalData functionality
 	console.log('AngularJS::home-controller::home-controller loaded');
 	
-	$rootScope.showNavbar = true;
 	$rootScope.isAuthenticated = response.data.isAuthenticated;
 	$rootScope.cartId = response.data.cartId;
 	$rootScope.cartSize = response.data.cartSize;
@@ -64,23 +81,60 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 	//window.digitalDataLastUpdate = new Date(); // update digitalDataLastUpdate variable. This variable can be watched by the tag management system
 	                                             // using Events:Value Changes type. This option polls.
   }])
-  .controller('login-controller', ['$rootScope', '$scope', 'response', function($rootScope, $scope, response) {
-	console.log('AngularJS::login-controller::login-controller loaded');
-  
-    console.log("%o", response);
-	
-    $rootScope.showNavbar = false;
+  .controller('products-controller', ['$rootScope', '$scope', 'response', function($rootScope, $scope, response) {
+	console.log('AngularJS::products-controller::products-controller loaded');
+	  
 	$rootScope.isAuthenticated = response.data.isAuthenticated;
 	$rootScope.cartId = response.data.cartId;
 	$rootScope.cartSize = response.data.cartSize;
-	
+		
 	window.digitalData = JSON.parse(response.data.digitalData);
-	
+		
 	window.digitalData.page.pageInfo.destinationURL = document.location.toString();
 	window.digitalData.page.pageInfo.referringURL = document.referrer.toString();
 	window.digitalData.page.pageInfo.breadcrumbs = document.location.pathname.split('/');
-	
-	console.log('AngularJS::login-controller::digitalData loaded, assigned, and updated');
-	
+		
+	console.log('AngularJS::products-controller::digitalData loaded, assigned, and updated');
+		
 	$(document).trigger("digitalDataRefresh", {id:"0", name:"digitalDataRefresh"});
+	
+	$scope.products = response.data.products;
+  }])
+  .controller('products-by-category-controller', ['$rootScope', '$scope', 'response', function($rootScope, $scope, response) {
+	console.log('AngularJS::products-by-category-controller::products-by-category-controller loaded');
+	  
+	$rootScope.isAuthenticated = response.data.isAuthenticated;
+	$rootScope.cartId = response.data.cartId;
+	$rootScope.cartSize = response.data.cartSize;
+		
+	window.digitalData = JSON.parse(response.data.digitalData);
+		
+	window.digitalData.page.pageInfo.destinationURL = document.location.toString();
+	window.digitalData.page.pageInfo.referringURL = document.referrer.toString();
+	window.digitalData.page.pageInfo.breadcrumbs = document.location.pathname.split('/');
+		
+	console.log('AngularJS::products-by-category-controller::digitalData loaded, assigned, and updated');
+		
+	$(document).trigger("digitalDataRefresh", {id:"0", name:"digitalDataRefresh"});
+	
+	$scope.products = response.data.products;
+  }])
+  .controller('product-controller', ['$rootScope', '$scope', 'response', function($rootScope, $scope, response) {
+	console.log('AngularJS::product-controller::product-controller loaded');
+	  
+	$rootScope.isAuthenticated = response.data.isAuthenticated;
+	$rootScope.cartId = response.data.cartId;
+	$rootScope.cartSize = response.data.cartSize;
+		
+	window.digitalData = JSON.parse(response.data.digitalData);
+		
+	window.digitalData.page.pageInfo.destinationURL = document.location.toString();
+	window.digitalData.page.pageInfo.referringURL = document.referrer.toString();
+	window.digitalData.page.pageInfo.breadcrumbs = document.location.pathname.split('/');
+		
+	console.log('AngularJS::product-controller::digitalData loaded, assigned, and updated');
+		
+	$(document).trigger("digitalDataRefresh", {id:"0", name:"digitalDataRefresh"});
+	
+	$scope.product = response.data.product;
   }]);

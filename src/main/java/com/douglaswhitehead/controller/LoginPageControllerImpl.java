@@ -1,7 +1,5 @@
-package com.douglaswhitehead.controller.api.data;
+package com.douglaswhitehead.controller;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -11,24 +9,33 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.douglaswhitehead.configuration.EnsightenManageConfigProperties;
+import com.douglaswhitehead.controller.api.data.AbstractDataController;
 import com.douglaswhitehead.datalayer.LoginDataLayer;
 import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.User;
 
-@RestController
-@RequestMapping("/data")
-public class LoginDataControllerImpl extends AbstractDataController implements LoginDataController {
-
+@Controller
+@RequestMapping("/login")
+public class LoginPageControllerImpl extends AbstractDataController implements LoginPageController {
+	
+	@Autowired
+	protected EnsightenManageConfigProperties properties;
+	
 	@Autowired
 	private LoginDataLayer dataLayer;
 	
 	@Override
-	@RequestMapping("/login")
-	public Map<String, Object> login(@RequestParam(value = "error", required = false) final String error, final HttpServletRequest request, final Device device, final HttpServletResponse response) {
+	@RequestMapping(method = RequestMethod.GET)
+	public String login(@RequestParam(value = "error", required = false) final String error, 
+			final HttpServletRequest request, final Device device, final HttpServletResponse response, 
+			final Model model) {
 		boolean auth = isAuthenticated();
 		String cartId;
 
@@ -45,18 +52,13 @@ public class LoginDataControllerImpl extends AbstractDataController implements L
 			user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		}
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
 		String digitalData = digitalDataAdapter.adapt(dataLayer.login(error, request, response, device, cart, user));
 		
-		//model.addAttribute("ensManAccountId", properties.getAccountId());
-		//model.addAttribute("ensManPublishPath", properties.getPublishPath());
-		map.put("isAuthenticated", auth);
-		map.put("cartId", cartId);
-		map.put("cartSize", calculateCartSize(cart));
-		map.put("digitalData", digitalData);
+		model.addAttribute("ensManAccountId", properties.getAccountId());
+		model.addAttribute("ensManPublishPath", properties.getPublishPath());
+		model.addAttribute("digitalData",digitalData);
 		
-		return map;
+		return "login";
 	}
 
 }

@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 
 import com.douglaswhitehead.model.Product;
 import com.douglaswhitehead.model.ShoppingCart;
@@ -30,8 +29,7 @@ public class ProductsDataLayerImpl extends AbstractDataLayer implements Products
 
 	@Override
 	public DigitalData list(final List<Product> products, final HttpServletRequest request, 
-			final HttpServletResponse response, final Device device, final Model model, 
-			final ShoppingCart cart, final User user) {
+			final HttpServletResponse response, final Device device, final ShoppingCart cart, final User user) {
 		return new DigitalDataImpl.Builder()
 				.pageInstanceID("productsList-prod")
 				.page(listPageAdapter(request, device))
@@ -48,8 +46,7 @@ public class ProductsDataLayerImpl extends AbstractDataLayer implements Products
 
 	@Override
 	public DigitalData listByCategory(final String category, final List<Product> products, final HttpServletRequest request, 
-			final HttpServletResponse response, final Device device, final Model model, 
-			final ShoppingCart cart, final User user) {
+			final HttpServletResponse response, final Device device, final ShoppingCart cart, final User user) {
 		return new DigitalDataImpl.Builder()
 				.pageInstanceID("productsListByCategory-prod")
 				.page(listByCategoryPageAdapter(request, device))
@@ -66,8 +63,7 @@ public class ProductsDataLayerImpl extends AbstractDataLayer implements Products
 
 	@Override
 	public DigitalData get(final Product product, final HttpServletRequest request, 
-			final HttpServletResponse response, final Device device, final Model model, 
-			final ShoppingCart cart, final User user) {
+			final HttpServletResponse response, final Device device, final ShoppingCart cart, final User user) {
 		return new DigitalDataImpl.Builder()
 				.pageInstanceID("productsGet-prod")
 				.page(getPageAdapter(product, request, device))

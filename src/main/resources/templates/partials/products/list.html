@@ -1,0 +1,19 @@
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+	<div class="container">
+      	<h1>Hello, world!</h1>
+      	<p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+      	<p><a class="btn btn-primary btn-lg" href="#/" role="button">Learn more &raquo;</a></p>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row" ng-repeat="product in products">
+        <div class="col-md-4">
+          <h2><span>{{product.name}}</span></h2>
+          <img ng-src="{{product.thumbnailUrl}}" width="100" />
+          <p><span>{{product.description}}</span></p>
+          <p><a class="btn btn-default" ng-href="#/{{product.productUrl}}">View details &raquo;</a></p>
+        </div>
+   	</div>
+</div>

@@ -8,6 +8,6 @@ import org.springframework.ui.Model;
 
 public interface HomePartialController {
 	
-	public String home(HttpServletRequest request, Device device, HttpServletResponse response, Model model);
+	public String get(HttpServletRequest request, Device device, HttpServletResponse response, Model model);
 
 }
