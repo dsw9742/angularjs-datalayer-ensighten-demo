@@ -10,6 +10,9 @@ angular.module('DataService', []) // service to retrieve data from server-side a
 	Data.removeFromCart = function(cartId, productId){
 	  return $http.put('/data/carts/'+cartId+'/removeFromCart/'+productId);
 	};
+	Data.complete = function(formData){
+	  return $http.post('/data/orders/complete/', formData);
+	}
 	Data.setRootScopeVars = function(response){ // factory function to set some $rootScope variables
 	  $rootScope.isAuthenticated = response.data.isAuthenticated;
 	  $rootScope.cartId = response.data.cartId;
@@ -91,11 +94,29 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 		  }]
 		}
 	  })
+	  .when('/orders/checkout', {
+		templateUrl: 'partials/orders/checkout.html',
+		controller: 'order-checkout-controller',
+		resolve: {
+		  response: ['Data', function(Data){
+			return Data.get('orders/checkout');
+		  }]
+		}
+	  })
+	  .when('/orders/complete', {
+		templateUrl: 'partials/orders/complete.html',
+		controller: 'order-complete-controller',
+		resolve: {
+		  response: ['Data', function(Data){
+			return Data.get('orders/complete');
+		  }]
+		}
+	  })
   }])
   .controller('app-controller', ['$scope', function($scope) { // primary application controller
 	console.log('AngularJS::app-controller::app-controller loaded');
   }])
-  .controller('home-controller', ['$rootScope', '$scope', 'response', 'Data', function($rootScope, $scope, response, Data) { // controller to demo "home"-type digitalData functionality
+  .controller('home-controller', ['$scope', 'response', 'Data', function($scope, response, Data) { // controller to demo "home"-type digitalData functionality
 	console.log('AngularJS::home-controller::controller loading');
 	
 	Data.setRootScopeVars(response);
@@ -103,7 +124,7 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 
 	console.log('AngularJS::home-controller::controller loaded');
   }])
-  .controller('products-controller', ['$rootScope', '$scope', 'response', 'Data', function($rootScope, $scope, response, Data) {
+  .controller('products-controller', ['$scope', 'response', 'Data', function($scope, response, Data) {
 	console.log('AngularJS::products-controller::controller loading');
 
 	Data.setRootScopeVars(response);
@@ -111,7 +132,7 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 
 	console.log('AngularJS::products-controller::controller loaded');
   }])
-  .controller('products-by-category-controller', ['$rootScope', '$scope', 'response', 'Data', function($rootScope, $scope, response, Data) {
+  .controller('products-by-category-controller', ['$scope', 'response', 'Data', function($scope, response, Data) {
 	console.log('AngularJS::products-by-category-controller::controller loading');
 	  
 	Data.setRootScopeVars(response);
@@ -142,7 +163,7 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 	
 	console.log('AngularJS::product-controller::controller loaded');
   }])
-  .controller('cart-controller', ['$rootScope', '$scope', 'response', 'Data', function($rootScope, $scope, response, Data) {
+  .controller('cart-controller', ['$scope', 'response', 'Data', function($scope, response, Data) {
 	console.log('AngularJS::cart-controller::controller loading');
 	  
 	Data.setRootScopeVars(response);
@@ -150,4 +171,29 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 	$scope.cart = response.data.cart;
 	
 	console.log('AngularJS::cart-controller::controller loaded');
+  }])
+  .controller('order-checkout-controller', ['$rootScope', '$scope', 'response', 'Data', '$location', function($rootScope, $scope, response, Data, $location) {
+	console.log('AngularJS::order-checkout-controller::controller loading');
+		  
+	Data.setRootScopeVars(response);
+	Data.setDigitalData(response, 'order-checkout-controller');
+	$scope.formData = {};
+	$scope.submit = function() {
+	  Data.complete($scope.formData)
+	    .success(function(order) {
+	      $rootScope.order = order;
+	      $location.path('/orders/complete');
+	    });
+	};
+		
+	console.log('AngularJS::order-checkout-controller::controller loaded');
+  }])
+  .controller('order-complete-controller', ['$rootScope', '$scope', 'response', 'Data', function($rootScope, $scope, response, Data) {
+	console.log('AngularJS::order-complete-controller::controller loading');
+	
+	Data.setRootScopeVars(response);
+	Data.setDigitalData(response, 'order-complete-controller');
+	$scope.order = $rootScope.order;
+	
+	console.log('AngularJS::order-complete-controller::controller loaded');
   }]);

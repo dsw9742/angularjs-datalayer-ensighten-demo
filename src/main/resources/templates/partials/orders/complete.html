@@ -1,0 +1,40 @@
+<div class="jumbotron"></div>
+		
+<div class="container" ng-if="(order != null) && (order.orderItems.length > 0)">
+
+	<h1>Order Complete</h1>
+    <p>Order Id: <span>{{order.id}}</span></p>
+    <p>Base Price: <span>{{order.basePrice}}</span></p>
+    <p>Voucher Code: <span>{{order.voucherCode}}</span></p>
+    <p>Voucher Discount: <span>{{order.voucherDiscount}}</span></p>
+    <p>Currency: <span>{{order.currency}}</span></p>
+    <p>Tax Rate: <span>{{order.taxRate}}</span></p>
+    <p>Shipping: <span>{{order.shipping}}</span></p>
+    <p>Shipping Method: <span>{{order.shippingMethod}}</span></p>
+    <p>Price with Tax: <span>{{order.priceWithTax}}</span></p>
+    <p><em>Order Total: <span>{{order.orderTotal}}</span></em></p>
+    		
+    <div class="row" ng-repeat="item in order.orderItems">
+		<div class="col-md-4">
+		    <h2><span>{{item.name}}</span></h2>
+		    <img ng-src="item.thumbnailUrl" height="50" />
+		    <p>price: <span>{{item.price}}</span></p>
+		    <p>quantity: <span>{{item.quantity}}</span></p>
+		    <p>sku: <span>{{item.sku}}</span></p>
+		    <p><a ng-href="{{item.productUrl}}" role="button">View details &raquo;</a></p>
+		</div>
+	</div>
+	    	
+	<hr>
+	    	
+	<a ng-href="#/">Home</a>
+	    	
+</div>
+
+    	<div class="container" ng-if="(order == null) || (order.orderItems.length == 0)">
+    		<div class="row">
+    			<div class="col-md-4">
+    				<p>No items in order.</p>
+    			</div>
+    		</div>
+    	</div>
