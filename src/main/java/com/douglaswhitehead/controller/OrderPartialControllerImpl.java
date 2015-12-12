@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.util.UriUtils;
 
+import com.douglaswhitehead.controller.api.data.AbstractDataController;
 import com.douglaswhitehead.datalayer.OrderDataLayer;
 import com.douglaswhitehead.model.Address;
 import com.douglaswhitehead.model.Order;
@@ -29,7 +30,7 @@ import com.douglaswhitehead.model.User;
 
 @Controller
 @RequestMapping("/orders")
-public class OrderPartialControllerImpl extends AbstractController implements OrderPartialController {
+public class OrderPartialControllerImpl extends AbstractDataController implements OrderPartialController {
 	
 	@Autowired
 	private OrderDataLayer dataLayer;

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.douglaswhitehead.controller.api.data.AbstractDataController;
 import com.douglaswhitehead.datalayer.ProductsDataLayer;
 import com.douglaswhitehead.model.Product;
 import com.douglaswhitehead.model.ShoppingCart;
@@ -24,7 +25,7 @@ import com.douglaswhitehead.service.ProductService;
 
 @Controller
 @RequestMapping("/products")
-public class ProductPartialControllerImpl extends AbstractController implements ProductPartialController {
+public class ProductPartialControllerImpl extends AbstractDataController implements ProductPartialController {
 	
 	@Autowired
 	private ProductService productService;

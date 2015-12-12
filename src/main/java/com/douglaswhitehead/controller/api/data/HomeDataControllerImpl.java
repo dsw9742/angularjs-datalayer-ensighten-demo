@@ -1,4 +1,4 @@
-package com.douglaswhitehead.controller.api.datalayer;
+package com.douglaswhitehead.controller.api.data;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,21 +14,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.douglaswhitehead.controller.AbstractController;
 import com.douglaswhitehead.datalayer.HomeDataLayer;
 import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.User;
 
 @RestController
-@RequestMapping("/digitaldata")
-public class HomeDataLayerControllerImpl extends AbstractController implements HomeDataLayerController {
+@RequestMapping("/data")
+public class HomeDataControllerImpl extends AbstractDataController implements HomeDataController {
 	
 	@Autowired
 	private HomeDataLayer dataLayer;
 
 	@Override
 	@RequestMapping("/home")
-	public Map<String, Object> home(HttpServletRequest request, Device device, HttpServletResponse response) {
+	public Map<String, Object> home(final HttpServletRequest request, final Device device, final HttpServletResponse response) {
 		boolean auth = isAuthenticated();
 		String cartId;
 

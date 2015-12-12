@@ -12,6 +12,6 @@ import com.douglaswhitehead.model.digitaldata.DigitalData;
 
 public interface LoginDataLayer {
 
-	public DigitalData login(String error, HttpServletRequest request, HttpServletResponse response, Device device, Model model, ShoppingCart cart, User user);
+	public DigitalData login(String error, HttpServletRequest request, HttpServletResponse response, Device device, ShoppingCart cart, User user);
 	
 }

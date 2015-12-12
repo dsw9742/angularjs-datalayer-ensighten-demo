@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.douglaswhitehead.controller.api.data.AbstractDataController;
 import com.douglaswhitehead.datalayer.ShoppingCartDataLayer;
 import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.User;
 
 @Controller
 @RequestMapping("/carts")
-public class ShoppingCartPartialControllerImpl extends AbstractController implements ShoppingCartPartialController {
+public class ShoppingCartPartialControllerImpl extends AbstractDataController implements ShoppingCartPartialController {
 	
 	@Autowired
 	private ShoppingCartDataLayer dataLayer;

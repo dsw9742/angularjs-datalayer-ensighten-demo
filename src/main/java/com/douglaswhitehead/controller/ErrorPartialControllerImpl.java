@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.HtmlUtils;
 
+import com.douglaswhitehead.controller.api.data.AbstractDataController;
 import com.douglaswhitehead.datalayer.ErrorDataLayer;
 import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.User;
 
 @Controller
-public class ErrorPartialControllerImpl extends AbstractController implements ErrorPartialController {
+public class ErrorPartialControllerImpl extends AbstractDataController implements ErrorPartialController {
 
 	@Autowired
 	private ErrorDataLayer dataLayer;

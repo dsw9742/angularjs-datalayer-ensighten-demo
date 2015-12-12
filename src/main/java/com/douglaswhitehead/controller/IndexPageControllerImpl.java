@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.douglaswhitehead.configuration.EnsightenManageConfigProperties;
+import com.douglaswhitehead.controller.api.data.AbstractDataController;
 
 @Controller
 @RequestMapping("/")
-public class IndexPageControllerImpl extends AbstractController implements IndexPageController {
+public class IndexPageControllerImpl extends AbstractDataController implements IndexPageController {
 	
 	@Autowired
 	protected EnsightenManageConfigProperties properties;

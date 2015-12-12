@@ -1,4 +1,4 @@
-package com.douglaswhitehead.controller;
+package com.douglaswhitehead.controller.api.data;
 
 import java.util.UUID;
 
@@ -19,7 +19,7 @@ import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.ShoppingCartItem;
 import com.douglaswhitehead.service.ShoppingCartService;
 
-public abstract class AbstractController {
+public abstract class AbstractDataController {
 	
 	private static final String CART_ID_COOKIE_NAME = "shoppingCartId";
 	

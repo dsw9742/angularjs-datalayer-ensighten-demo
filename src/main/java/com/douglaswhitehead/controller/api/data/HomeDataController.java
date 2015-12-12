@@ -1,4 +1,4 @@
-package com.douglaswhitehead.controller.api.datalayer;
+package com.douglaswhitehead.controller.api.data;
 
 import java.util.Map;
 
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.mobile.device.Device;
 
-public interface HomeDataLayerController {
+public interface HomeDataController {
 	
 	public Map<String, Object> home(HttpServletRequest request, Device device, HttpServletResponse response);
 
