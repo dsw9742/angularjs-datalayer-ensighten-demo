@@ -1,4 +1,4 @@
-package com.douglaswhitehead.controller.api.data;
+package com.douglaswhitehead.controller.data;
 
 import java.util.HashMap;
 import java.util.List;
@@ -115,10 +115,10 @@ public class ProductsDataControllerImpl extends AbstractDataController implement
 		
 		Product product = productService.get(id);
 		if (product == null) {
-			String error = "redirect:/error?error="+"No such product.";
+			String error = "No such product.";
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("error", error);
-			return  map;
+			return map;
 		}
 		ShoppingCart cart = cartService.get(UUID.fromString(cartId));
 		User user = null;

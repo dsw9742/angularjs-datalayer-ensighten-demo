@@ -1,4 +1,4 @@
-package com.douglaswhitehead.controller.api.data;
+package com.douglaswhitehead.controller.data;
 
 import java.util.UUID;
 

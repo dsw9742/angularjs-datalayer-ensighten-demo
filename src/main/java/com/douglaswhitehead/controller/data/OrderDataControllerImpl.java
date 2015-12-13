@@ -1,4 +1,4 @@
-package com.douglaswhitehead.controller.api.data;
+package com.douglaswhitehead.controller.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +44,7 @@ public class OrderDataControllerImpl extends AbstractDataController implements O
 			String error = "No cartId cookie.";
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("error", error);
-			return  map;
+			return map;
 		} else {
 			Cookie cookie = getCartIdCookie(request);
 			cartId = cookie.getValue();
@@ -55,7 +56,7 @@ public class OrderDataControllerImpl extends AbstractDataController implements O
 			String error = "No items in cart to checkout.";
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("error", error);
-			return  map;
+			return map;
 		}
 		
 		User user = null;
@@ -77,7 +78,7 @@ public class OrderDataControllerImpl extends AbstractDataController implements O
 
 	@Override
 	@RequestMapping(value = "/complete", method = RequestMethod.POST)
-	public Map<String, Object> complete(final OrderForm orderForm, final HttpServletRequest request, final Device device,
+	public Map<String, Object> complete(@RequestBody final OrderForm orderForm, final HttpServletRequest request, final Device device,
 			final HttpServletResponse response) {
 		boolean auth = isAuthenticated();
 		String cartId;
@@ -86,7 +87,7 @@ public class OrderDataControllerImpl extends AbstractDataController implements O
 			String error = "Order error. No cartId cookie.";
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("error", error);
-			return  map;
+			return map;
 		} else {
 			Cookie cookie = getCartIdCookie(request);
 			cartId = cookie.getValue();

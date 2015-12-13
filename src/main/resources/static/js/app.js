@@ -107,8 +107,8 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 		templateUrl: 'partials/orders/complete.html',
 		controller: 'order-complete-controller',
 		resolve: {
-		  response: ['Data', function(Data){
-			return Data.get('orders/complete');
+		  response: ['$rootScope', function($rootScope){
+			return $rootScope.orderData;
 		  }]
 		}
 	  })
@@ -180,8 +180,8 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 	$scope.formData = {};
 	$scope.submit = function() {
 	  Data.complete($scope.formData)
-	    .success(function(order) {
-	      $rootScope.order = order;
+	    .success(function(data) {
+	      $rootScope.orderData = data;
 	      $location.path('/orders/complete');
 	    });
 	};
@@ -190,10 +190,11 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
   }])
   .controller('order-complete-controller', ['$rootScope', '$scope', 'response', 'Data', function($rootScope, $scope, response, Data) {
 	console.log('AngularJS::order-complete-controller::controller loading');
-	
-	Data.setRootScopeVars(response);
-	Data.setDigitalData(response, 'order-complete-controller');
-	$scope.order = $rootScope.order;
-	
+	Data.setRootScopeVars({data:response});
+	Data.setDigitalData({data:response}, 'order-complete-controller');
+	$scope.order = response.order;
+	$scope.$on('$locationChangeStart', function() {
+	  delete $rootScope.orderData;
+	});
 	console.log('AngularJS::order-complete-controller::controller loaded');
   }]);

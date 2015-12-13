@@ -1,4 +1,4 @@
-package com.douglaswhitehead.controller;
+package com.douglaswhitehead.controller.view;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.douglaswhitehead.configuration.EnsightenManageConfigProperties;
-import com.douglaswhitehead.controller.api.data.AbstractDataController;
+import com.douglaswhitehead.controller.data.AbstractDataController;
 
 @Controller
 @RequestMapping("/")

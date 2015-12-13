@@ -1,4 +1,4 @@
-package com.douglaswhitehead.controller;
+package com.douglaswhitehead.controller.view;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
