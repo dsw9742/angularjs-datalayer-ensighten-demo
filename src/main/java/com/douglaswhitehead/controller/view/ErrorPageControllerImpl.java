@@ -16,14 +16,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.HtmlUtils;
 
+import com.douglaswhitehead.configuration.EnsightenManageConfigProperties;
 import com.douglaswhitehead.controller.data.AbstractDataController;
 import com.douglaswhitehead.datalayer.ErrorDataLayer;
 import com.douglaswhitehead.model.ShoppingCart;
 import com.douglaswhitehead.model.User;
 
 @Controller
-public class ErrorPartialControllerImpl extends AbstractDataController implements ErrorPartialController {
+@RequestMapping("/error")
+public class ErrorPageControllerImpl extends AbstractDataController implements ErrorPageController {
 
+	@Autowired
+	protected EnsightenManageConfigProperties properties;
+	
 	@Autowired
 	private ErrorDataLayer dataLayer;
 	
@@ -47,13 +52,10 @@ public class ErrorPartialControllerImpl extends AbstractDataController implement
 		if (auth) {
 			user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		}
-		String digitalData = digitalDataAdapter.adapt(dataLayer.error(HtmlUtils.htmlEscape(error), String.valueOf(response.getStatus()), request, response, device, model, cart, user));
+		String digitalData = digitalDataAdapter.adapt(dataLayer.error(HtmlUtils.htmlEscape(error), String.valueOf(response.getStatus()), request, response, device, cart, user));
 		
-		//model.addAttribute("ensManAccountId", properties.getAccountId());
-		//model.addAttribute("ensManPublishPath", properties.getPublishPath());
-		model.addAttribute("isAuthenticated", auth);
-		model.addAttribute("cartId", cartId);
-		model.addAttribute("cartSize", calculateCartSize(cart));
+		model.addAttribute("ensManAccountId", properties.getAccountId());
+		model.addAttribute("ensManPublishPath", properties.getPublishPath());
 		model.addAttribute("error", HtmlUtils.htmlEscape(error));
 		model.addAttribute("status", response.getStatus());
 		model.addAttribute("digitalData", digitalData);

@@ -28,7 +28,7 @@ public class ErrorDataLayerImpl extends AbstractDataLayer implements ErrorDataLa
 
 	@Override
 	public DigitalData error(final String error, final String status, final HttpServletRequest request, 
-			final HttpServletResponse response, final Device device, final Model model, 
+			final HttpServletResponse response, final Device device,
 			final ShoppingCart cart, final User user) {
 		return new DigitalDataImpl.Builder()
 				.pageInstanceID("error-prod")

@@ -4,13 +4,13 @@ angular.module('DataService', []) // service to retrieve data from server-side a
     Data.get = function(pageName){ // factory function to retrieve data from server-side
 	  return $http.get('/data/'+pageName);
 	};
-	Data.addToCart = function(cartId, productId){
+	Data.addToCart = function(cartId, productId){ // factory function to add product to shopping cart
 	  return $http.put('/data/carts/'+cartId+'/addToCart/'+productId);
 	};
-	Data.removeFromCart = function(cartId, productId){
+	Data.removeFromCart = function(cartId, productId){ // factory function to remove product from shopping cart
 	  return $http.put('/data/carts/'+cartId+'/removeFromCart/'+productId);
 	};
-	Data.complete = function(formData){
+	Data.complete = function(formData){  // factory function to purchase products in shopping cart
 	  return $http.post('/data/orders/complete/', formData);
 	}
 	Data.setRootScopeVars = function(response){ // factory function to set some $rootScope variables
