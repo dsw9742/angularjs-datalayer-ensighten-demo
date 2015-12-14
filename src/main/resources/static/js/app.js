@@ -41,7 +41,8 @@ angular.module('DataService', []) // service to retrieve data from server-side a
 	                                                       // created that correspond with the event names implemented by the development team, TMS users can use those Events as
 	                                                       // Conditions when deploying tag code instead of requiring them to manually wrap their tags with code. Supposedly this
 	                                                       // option also allows tag code to be wrapped by Boostrapper.on() method (Ensighten Framework Delegation / On) but I
-	                                                       // personally have not seen this work with AngularJS.
+	                                                       // personally cannot get this work to with AngularJS, possibly because Delegation / On relies on CSS selectors, and 
+	                                                       // there is no CSS to select in this particular case.
 		
 	  // option 3
 	  //window.digitalDataLastUpdate = new Date(); // update digitalDataLastUpdate variable. This variable can be watched by the tag management system using Ensighten's Events:
