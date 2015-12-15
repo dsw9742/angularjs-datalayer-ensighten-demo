@@ -29,11 +29,16 @@ angular.module('DataService', []) // service to retrieve data from server-side a
 	  console.log('AngularJS::%s::digitalData loaded, assigned, and updated',controllerName);
 		
 	  // option 1
-	  $(document).trigger("digitalDataRefresh", {id:"0", name:"digitalDataRefresh"}); // fire custom digitalDataRefresh event using jQuery. This can be observed by tag management 
-		                                                                  			  // system using the jQuery .on() method. This is probably the most flexible option since 
-	                                                                                  // jQuery's .on() method is more extensive than Ensighten Events or the Ensighten Framework 
-	                                                                                  // Delegation / On Bootstrapper.on() method. Consider using this if option if your TMS users 
-	                                                                                  // are comfortable wrapping tags with jQuery code and you can use the jQuery library.
+	  $(document).trigger("digitalDataRefresh"); // fire custom digitalDataRefresh event using jQuery. This can be observed by tag management 
+		                                         // system using the jQuery .on() method. This is probably the most flexible option since 
+	                                             // jQuery's .on() method is more extensive than Ensighten Events or the Ensighten Framework 
+	                                             // Delegation / On Bootstrapper.on() method. Consider using this if option if your TMS users 
+	                                             // are comfortable wrapping tags with jQuery code and you can use the jQuery library.
+	                                             //
+	                                             // Pros:
+	                                             //
+	                                             // Cons:
+	                                             //
 		
 	  // option 2
 	  Bootstrapper.ensEvent.trigger("digitalDataRefresh"); // fire custom digitalDataRefresh Ensighten event using Ensighten's proprietary Bootstrapper.ensEvent.trigger() method. 
@@ -43,17 +48,32 @@ angular.module('DataService', []) // service to retrieve data from server-side a
 	                                                       // option also allows tag code to be wrapped by Boostrapper.on() method (Ensighten Framework Delegation / On) but I
 	                                                       // personally cannot get this work to with AngularJS, possibly because Delegation / On relies on CSS selectors, and 
 	                                                       // there is no CSS to select in this particular case.
+	                                                       //
+                                                           // Pros:
+                                                           //
+                                                           // Cons:
+                                                           //
 		
 	  // option 3
 	  //window.digitalDataLastUpdate = new Date(); // update digitalDataLastUpdate variable. This variable can be watched by the tag management system using Ensighten's Events:
 	                                               // Value Changes feature. This feature polls so there are performance implications to consider, but it does also allow TMS users
 	                                               // to use Events as Conditions when deploying tag code instead of requiring them to manually wrap their tags with code.
+                                                   //
+                                                   // Pros:
+                                                   //
+                                                   // Cons:
+                                                   //
 	  
 	  // option 4
 	  //Ensighten Framework Property Watcher Helper // more info is available at https://success.ensighten.com/hc/en-us/articles/201720700-Helpers-Property-Watcher. This option 
 	                                                // is not built out as it is very similar to option 3 but Bootstrapper.propertyWatcher is attached to window.digitalDataLastUpdate,
 	                                                // configured, and polls for changes. Either the tag code can be deployed directly in response to the change as part of the 
 	                                                // Bootstrapper.propertyWatcher configuration, or a custom event can be triggered and observed by jQuery or Ensighten.
+	                                                // 
+	                                                // Pros:
+	                                                //
+	                                                // Cons:
+	                                                // 
 	  
 	};
     return Data;
@@ -165,12 +185,18 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 	    .success(function(cart) {
 		  $rootScope.cartSize = $rootScope.cartSize+1; // update UI
 		  var event = {id:"1", name:"digitalDataEvent", type:"addToCart", data:cart}; // create event
-		  window.digitalData.event.push(event); // update digitalData.event array. Note we are not updating any of 
+		  window.digitalData.event.push(event); // update digitalData.event array. We stash the event object in the 
+		                                        // digitalData.event array so that 1) we have page-level event 
+		                                        // persistence in case calculations need to be performed amongst a
+		                                        // (limited) set of events and 2) we are not reliant on the event
+		                                        // to send the data (those this may be desired).
+		                                        //
+		                                        // Note we are not updating any of 
 		                                        // the digitalData.cart subobject here as a design choice, though we 
 		                                        // could. The digitalData.cart subobject will, however, reflect the 
 		                                        // addition of this product the next time the entire digitalData
 		                                        // object is requested and returned from the server-side.
-		  $(document).trigger("digitalDataEvent", event); // fire custom digitalDataEvent event using jQuery
+		  $(document).trigger("digitalDataEvent"); // fire custom digitalDataEvent event using jQuery
 	    });
 	};
 	
