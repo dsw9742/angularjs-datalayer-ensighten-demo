@@ -38,7 +38,8 @@ angular.module('DataService', []) // service to retrieve data from server-side a
 	                                             // Pros:
 	                                             //
 	                                             // Cons:
-	                                             //
+	                                             // - can't use Apps within Ensighten
+	                                             // - may or may not be able to use jQuery
 		
 	  // option 2
 	  Bootstrapper.ensEvent.trigger("digitalDataRefresh"); // fire custom digitalDataRefresh Ensighten event using Ensighten's proprietary Bootstrapper.ensEvent.trigger() method. 
@@ -53,7 +54,27 @@ angular.module('DataService', []) // service to retrieve data from server-side a
                                                            //
                                                            // Cons:
                                                            //
-		
+	  
+	  // option 2a
+	  // wrapper function
+	  // global postpageload-handling function(event, data) {
+	  //   console.log(out);
+	  // }
+	  //
+	  // use TMS deployment to overwrite postpageload-handling(event, data) {
+	  //   // put whatever tags/deployment code you want here (including Ensighten Bootstrapper.ensEvent.trigger() or other vendor-specific code)
+	  // }
+	  
+	  // option 2b
+	  // overwrite push method for array.push() using prototype to add events, etc.
+	  //
+	  // path 1 - enable Manage App use
+	  //          trigger Named Event, then Data Def / App pulls from most recent digitalData.event[]
+	  // 
+	  // path 2 - all custom JS, no Manage App use
+	  //          trigger event, then Data Def / App pulls from most recent digitalData.event[]
+	  // 
+	  
 	  // option 3
 	  //window.digitalDataLastUpdate = new Date(); // update digitalDataLastUpdate variable. This variable can be watched by the tag management system using Ensighten's Events:
 	                                               // Value Changes feature. This feature polls so there are performance implications to consider, but it does also allow TMS users
