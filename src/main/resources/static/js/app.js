@@ -1,3 +1,8 @@
+// uncomment these lines to set this function live
+//window.postpageload = function(event, data) {
+//  console.log('event: %o, data: $o', event, data);
+//}
+
 angular.module('DataService', []) // service to retrieve data from server-side and work with it client-side
   .factory('Data', ['$http', '$rootScope', function($http, $rootScope){
     var Data = {};
@@ -28,73 +33,273 @@ angular.module('DataService', []) // service to retrieve data from server-side a
 		
 	  console.log('AngularJS::%s::digitalData loaded, assigned, and updated',controllerName);
 		
-	  // option 1
-	  $(document).trigger("digitalDataRefresh"); // fire custom digitalDataRefresh event using jQuery. This can be observed by tag management 
-		                                         // system using the jQuery .on() method. This is probably the most flexible option since 
-	                                             // jQuery's .on() method is more extensive than Ensighten Events or the Ensighten Framework 
-	                                             // Delegation / On Bootstrapper.on() method. Consider using this if option if your TMS users 
-	                                             // are comfortable wrapping tags with jQuery code and you can use the jQuery library.
-	                                             //
-	                                             // Pros:
-	                                             //
-	                                             // Cons:
-	                                             // - can't use Apps within Ensighten
-	                                             // - may or may not be able to use jQuery
-		
-	  // option 2
-	  Bootstrapper.ensEvent.trigger("digitalDataRefresh"); // fire custom digitalDataRefresh Ensighten event using Ensighten's proprietary Bootstrapper.ensEvent.trigger() method. 
-	                                                       // This can be observed by tag management system by using Ensighten's Events:Named Events feature. Once Events are
-	                                                       // created that correspond with the event names implemented by the development team, TMS users can use those Events as
-	                                                       // Conditions when deploying tag code instead of requiring them to manually wrap their tags with code. Supposedly this
-	                                                       // option also allows tag code to be wrapped by Boostrapper.on() method (Ensighten Framework Delegation / On) but I
-	                                                       // personally cannot get this work to with AngularJS, possibly because Delegation / On relies on CSS selectors, and 
-	                                                       // there is no CSS to select in this particular case.
-	                                                       //
-                                                           // Pros:
-                                                           //
-                                                           // Cons:
-                                                           //
+	  /***************************
+	   * OPTION 1: DIRECT EVENTS *
+	   **************************/
+	  /*
+	   * STEP 1: DEVELOPERS TRIGGER EVENT WITHIN APP CODE
+	   */ 
+	  /* STEP 1, OPTION A: fire custom digitalDataRefresh event using jQuery. */
+	  $(document).trigger("digitalDataRefresh"); // app code, uncomment to set live
+	  /* This can be observed by tag management system using the jQuery .on() method. This is 
+	     probably the most flexible option since 
+	     jQuery's .on() method is more extensive than Ensighten Events or the Ensighten Framework 
+	     Delegation / On Bootstrapper.on() method. Consider using this if option if your TMS users 
+	     are comfortable wrapping tags with jQuery code and you can use the jQuery library.
+	       
+	     Pros:
+	     - simple for developers to implement
+	     - lightweight
+	     - simple design makes troubleshooting straight-forward
+	     - can pass data payload directly to tags via event
+	     - no hard-coded dependencies on vendor-specific code 
+	     Cons:
+	     - cannot use Apps within Ensighten Manage
+	     - may or may not be able to use jQuery */
+ 
+	  /* STEP 1, OPTION B: fire custom digitalDataRefresh Ensighten event using Ensighten proprietary code. */  
+	  //Bootstrapper.ensEvent.trigger("digitalDataRefresh"); // app code, uncomment to set live
+	  /* This can be observed by tag management system by using Ensighten Events:Named Events 
+	     feature. Once Events are
+         created that correspond with the event names implemented by the development team, TMS users 
+         can use those Events as Conditions when deploying tag code instead of requiring them to 
+         manually wrap their tags with code.
+	                                                           
+         Pros:
+         - simple for developers to implement
+         - lightweight
+         - simple design makes troubleshooting straight-forward
+	     - retains ability to use Apps within Ensighten Manage
+         Cons:
+	     - hard-coded dependency on vendor-specific code
+	     - possible to miss hearing app events if they trigger before Ensighten Manage completely loads
+         - cannot pass data payload directly to tags via event, so event data must be stored elsewhere (e.g. digitalData object) */
 	  
-	  // option 2a
-	  // wrapper function
-	  // global postpageload-handling function(event, data) {
-	  //   console.log(out);
-	  // }
-	  //
-	  // use TMS deployment to overwrite postpageload-handling(event, data) {
-	  //   // put whatever tags/deployment code you want here (including Ensighten Bootstrapper.ensEvent.trigger() or other vendor-specific code)
-	  // }
+	  /* 
+	   * STEP 2: IMPLEMENT TAG DEPLOYMENT(S)
+	   */
+	  /* if you use STEP 1, OPTION A above: */
+	     
+	  /* "tags" deployment info:
+	       app: Custom JS
+	       tag code: wrap the tag code in $(document).on("digitalDataRefresh" [, selector] [, data], handler) method
+	                 example:
+	                 $(document).on("digitalDataRefresh", function(event, data) {
+	                   console.log('Ensighten Manage::jQuery::digitalDataRefresh event observed.');
+	                   console.log('Ensighten Manage::jQuery::digitalDataRefresh event %o',event);
+	                   console.log('Ensighten Manage::jQuery::digitalDataRefresh data %o',data);
+	                 });
+	       condition: (synchronous) Global
+	       dependencies: none
+	       execution time: Immediate
+	    
+	  /* if you use STEP 1, OPTION B above: */
 	  
-	  // option 2b
-	  // overwrite push method for array.push() using prototype to add events, etc.
-	  //
-	  // path 1 - enable Manage App use
-	  //          trigger Named Event, then Data Def / App pulls from most recent digitalData.event[]
-	  // 
-	  // path 2 - all custom JS, no Manage App use
-	  //          trigger event, then Data Def / App pulls from most recent digitalData.event[]
-	  // 
+	  /* event info:
+	       name: "digitalDataRefresh"
+	       conditions: as close to (synchronous) Global as possible
+	       type: Named Event
+	       
+	     "tags" deployment info:
+	       app: any supported manage App
+	       tag code: no extra wrapping, etc. required
+	                 example:
+	                 console.log('Ensighten Manage::Named Event::digitalDataRefresh event observed.');
+	       condition: named event (from above)
+	       dependencies: none
+	       execution time: Immediate */
 	  
-	  // option 3
-	  //window.digitalDataLastUpdate = new Date(); // update digitalDataLastUpdate variable. This variable can be watched by the tag management system using Ensighten's Events:
-	                                               // Value Changes feature. This feature polls so there are performance implications to consider, but it does also allow TMS users
-	                                               // to use Events as Conditions when deploying tag code instead of requiring them to manually wrap their tags with code.
-                                                   //
-                                                   // Pros:
-                                                   //
-                                                   // Cons:
-                                                   //
+	  /*************************************
+	   * OPTION 2: GLOBAL WRAPPER FUNCTION *
+	   ************************************/
+	  /*
+	   * STEP 1: DEVELOPERS CALL A "DUMMY" GLOBAL FUNCTION FROM APP CODE
+	   */ 
+	  // window.postpageload(event, data);  // app code, uncomment to set live. Reference top of this app.js file. 
 	  
-	  // option 4
-	  //Ensighten Framework Property Watcher Helper // more info is available at https://success.ensighten.com/hc/en-us/articles/201720700-Helpers-Property-Watcher. This option 
-	                                                // is not built out as it is very similar to option 3 but Bootstrapper.propertyWatcher is attached to window.digitalDataLastUpdate,
-	                                                // configured, and polls for changes. Either the tag code can be deployed directly in response to the change as part of the 
-	                                                // Bootstrapper.propertyWatcher configuration, or a custom event can be triggered and observed by jQuery or Ensighten.
-	                                                // 
-	                                                // Pros:
-	                                                //
-	                                                // Cons:
-	                                                // 
+	  /*
+	   * STEP 2: USE A TAG MANAGEMENT SYSTEM DEPLOYMENT TO OVERWRITE THE "DUMMY" GLOBAL FUNCTION WITH "REAL" CODE
+	   */
+	  /* STEP 2, OPTION A: combo event switchboard w/ tags. */ 
+	  /* "event switchboard and tags" deployment info:
+	       app: Custom JS
+	       tag code: overwrite dummy global function with real code
+	                 example:
+	                 window.postpageload(event, data) {
+	                   switch (event.eventInfo.eventName) {
+	                     case 'digitalDataRefresh':
+	                       console.log('this could be tag 1 code and this data is available to it: event %o, data %o', event, data);
+	                       console.log('this could be tag 2 code and this data is available to it: event %o, data %o', event, data);
+	                       break;
+	                   }
+	                 }
+	       condition: (synchronous) Global
+	       dependencies: none
+	       execution time: Immediate
+	    
+	     Pros:
+	     - simple for developers to implement
+	     - simple design makes troubleshooting straight-forward
+	     - can pass data payload directly to tags via event
+	     - no hard-coded dependencies on vendor-specific code 
+	     Cons:
+	     - cannot use Apps within Ensighten Manage
+	     - maintaining all tag code in one deployment can lead to code clutter */ 
+	  
+	  /* STEP 2, OPTION B: separate event switchboard deployment, fires Ensighten named events, and tag deployments. */
+	  /* "event switchboard" deployment info:
+	     app: Custom JS
+	       tag code: overwrite dummy global function with real code that fires events
+	                 example:
+	                 window.postpageload(event, data) {
+	                   switch (event.eventInfo.eventName) {
+	                     case 'digitalDataRefresh':
+	                       Bootstrapper.ensEvent.trigger("digitalDataRefresh");
+	                       break;
+                         case 'digitalDataEvent':
+	                       Bootstrapper.ensEvent.trigger("digitalDataEvent");
+	                       break;
+	                   }
+	                 }
+	       condition: (synchronous) Global
+	       dependencies: none
+	       execution time: Immediate
+	    
+	     events info: (using same example events from "event switchboard" deployment info, above)
+	       name: "digitalDataRefresh"
+	       conditions: as close to (synchronous) Global as possible
+	       type: Named Event
+	    
+	       name: "digitalDataEvent"
+	       conditions: as close to (synchronous) Global as possible
+	       type: Named Event
+	    
+	     "tag" deployments info:
+	       app: any supported manage App
+	       tag code: no extra wrapping, etc. required
+	                 example:
+	                 console.log('this could be tag 1 code');
+	       condition: named event (as appropriate, from event info, above)
+	       dependencies: "event switchboard" deployment
+	       execution time: Immediate
+	    
+	     Pros:
+	     - simple for developers to implement
+	     - no hard-coded dependencies on vendor-specific code 
+	     - retains ability to use Apps within Ensighten Manage
+	     Cons:
+	     - complex design makes troubleshooting more difficult
+	     - possible to miss hearing app events if they trigger before Ensighten Manage completely loads
+         - cannot pass data payload directly to tags via event, so event data must be stored elsewhere (e.g. digitalData object) */ 
+	  
+	  /*********************
+	   * OPTION 3: POLLING * 
+	   ********************/ 
+	  /*
+	   * STEP 1: DEVELOPERS UPDATE GLOBAL VARIABLE
+	   */
+	  //window.eventUpdate = new Date(); // app code, uncomment to set live
+	  
+	  /*
+	   * STEP 2: POLL GLOBAL VARIABLE FOR CHANGES
+	   */
+	  /* STEP 2, OPTION A: utilize Ensighten Manage Events: Value Changes feature. */
+      /* data definition info:
+           extractor: function() { return window.eventUpdate; }
+           conditions: (synchronous) Global
+           spaces: all
+           persistence: Instance
+           trigger: Custom
+                    leave custom trigger code empty (this fires the data definition as quickly as possible)
+          
+         event info:
+           name: "digitalDataRefresh"
+	       conditions: as close to (synchronous) Global as possible
+	       type: Value Changes
+	       settings:
+	         element to monitor: 
+	         fire when first set: yes
+	         fire every update: yes
+         
+         "tag" deployments info:
+           app: any supported manage App
+	       tag code: no extra wrapping, etc. required
+	                 example:
+	                 console.log('this could be tag 1 code');
+	       condition: value changes event (as appropriate, from event info, above)
+	       dependencies: none
+	       execution time: Immediate
+         
+         Pros:
+         - simple for developers to implement
+	     - no hard-coded dependencies on vendor-specific code 
+	     - retains ability to use Apps within Ensighten Manage
+         Cons:
+         - complex design makes troubleshooting more difficult
+         - data definition must exist in every space in account
+         - additional overhead from polling impacts app performance
+         - possible to miss hearing events due to polling
+         - possible to miss hearing app events if they trigger before Ensighten Manage completely loads
+         - cannot pass data payload directly to tags via event, so event data must be stored elsewhere (e.g. digitalData object) */
+	  
+	  /* STEP 2, OPTION B: utilize Ensighten Framework Property Watcher Helper. */
+	  /* Not going to go into detail here, but more info is available at 
+	     https://success.ensighten.com/hc/en-us/articles/201720700-Helpers-Property-Watcher (account required).
+	     
+	     Basic idea is to create a "property watcher" deployment that wraps the window.eventUpdate property. When
+	     the property updates, either 1) trigger Ensighten Named Events (which have to be built in the UI) and wire
+	     up Ensighten Apps to those Events as Conditions, or 2) build the tag code directly into the deployment.  
+	     
+	     Pros:
+         - simple for developers to implement
+	     - no hard-coded dependencies on vendor-specific code 
+	     - it *can* (1) retain ability to use Apps within Ensighten Manage
+         Cons:
+         - it *might* (2) prevent use of Apps within Ensighten Manage
+         - complex design makes troubleshooting more difficult
+         - data definition must exist in every space in account
+         - additional overhead from polling impacts app performance
+         - possible to miss hearing events due to polling
+         - possible to miss hearing app events if they trigger before Ensighten Manage completely loads
+         - cannot pass data payload directly to tags via event, so event data must be stored elsewhere (e.g. digitalData object) */
+	  
+	  /*******************************************************
+	   * OPTION 4: OVERWRITE Array.prototype.push() FUNCTION *
+	   ******************************************************/
+      /*
+       * STEP 1: DEPLOYMENT TO OVERWRITE Array.prototype.push() FUNCTION
+       */
+	  /* Array.prototype.push() overwrite deployment info:
+	       app: Custom JS
+	       tag code: overwrite Array.prototype.push() function with same code + fires Ensighten events
+	                 example:
+	                 Array.prototype.push = function() {
+                       for(var i=0, l=arguments.length; i<l; i++) {
+                         Bootstrapper.ensEvent.trigger("arrayPush"); 
+                         this[this.length] = arguments[i];
+                       }
+                       return this.length;
+                     };
+	       condition: (synchronous) Global
+	       dependencies: none
+	       execution time: Immediate
+	  
+	  /*
+	   * STEP 2: a) COMBO EVENT SWITCHBOARD W/ TAGS OR b) SEPARATE SWITCHBOARD/EVENTS/TAG DEPLOYMENTS
+	   */
+	  /*
+	    See the above examples that demonstrate how a) or b) can be implemented.
+	   
+	    Pros:
+	     - simple for developers to implement (once Array.prototype.push() has been overwritten)
+		 - no hard-coded dependencies on vendor-specific code 
+		 - it *can* (b) retain ability to use Apps within Ensighten Manage
+	    Cons:
+	     - requires overwriting the Array.prototype.push() browser JavaScript engine function
+	     - it *might* (a) prevent use of Apps within Ensighten Manage
+	     - complex design makes troubleshooting more difficult
+	     - possible to miss hearing app events if they trigger before Ensighten Manage completely loads
+	     - cannot pass data payload directly to tags via event, so event data must be stored elsewhere (e.g. digitalData object) */
 	  
 	};
     return Data;
@@ -205,7 +410,26 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 	  Data.addToCart($rootScope.cartId, $scope.product.id)
 	    .success(function(cart) {
 		  $rootScope.cartSize = $rootScope.cartSize+1; // update UI
-		  var event = {id:"1", name:"digitalDataEvent", type:"addToCart", data:cart}; // create event
+		  
+		  // create event (we are following W3C CEDDL spec in this example, https://www.w3.org/community/custexpdata/)
+		  var event = { 
+		    eventInfo: {
+			  eventName:"digitalDataEvent", 
+			  eventAction:"addToCart",
+			  // eventPoints: , // as a design choice, we don't use this property ...
+			  // type: , // ... or this
+			  timeStamp: new Date(),
+			  // cause: , // ... or this
+			  // effect: , // ... or this
+			},
+			category: {
+		      primaryCategory:"cart",	  
+		    },
+			attributes: { // custom attributes
+		      data:cart, // as a design choice, we elect to pass server-side payload to a property called "data"
+		    },
+		  };
+		  
 		  window.digitalData.event.push(event); // update digitalData.event array. We stash the event object in the 
 		                                        // digitalData.event array so that 1) we have page-level event 
 		                                        // persistence in case calculations need to be performed amongst a
@@ -217,7 +441,14 @@ angular.module('app', ['ngRoute', 'DataService']) // primary application module
 		                                        // could. The digitalData.cart subobject will, however, reflect the 
 		                                        // addition of this product the next time the entire digitalData
 		                                        // object is requested and returned from the server-side.
-		  $(document).trigger("digitalDataEvent"); // fire custom digitalDataEvent event using jQuery
+		  
+		  $(document).trigger("digitalDataEvent"); // fire custom digitalDataEvent event using jQuery (option 1).
+		                                           // since we're using jQuery we could also bypass the entire step
+		                                           // above where we stash the event in the digitalData.event[]
+		                                           // array and pass the event object as the second parameter in
+		                                           // this call instead, i.e. 
+		                                           // $(document).trigger("digitalDataEvent", event);
+		  
 	    });
 	};
 	
